@@ -13,7 +13,10 @@ fun main() {
 }
 
 fun Application.module() {
+    configureLogging()
     configureSerialization()
+    configureStatusPages()
     configureSecurity()
+    configureSwagger()
     configureRouting()
 }

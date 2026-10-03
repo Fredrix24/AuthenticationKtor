@@ -1,6 +1,7 @@
 package com.example.routing
 
 import com.example.dto.*
+import com.example.model.Task
 import com.example.service.TaskService
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -10,7 +11,7 @@ import io.ktor.server.routing.*
 
 fun Route.taskRoutes() {
     route("/tasks") {
-        //Публичные
+
         get {
             val completed = call.request.queryParameters["completed"]?.toBooleanStrictOrNull()
             val tasks = TaskService.getAll(completed)
@@ -29,7 +30,8 @@ fun Route.taskRoutes() {
                 ApiResponse(true, "Задача найдена", task))
         }
 
-        //Защищённые
+
+
         authenticate("auth-jwt") {
             post {
                 val req = call.receive<CreateTaskRequest>()

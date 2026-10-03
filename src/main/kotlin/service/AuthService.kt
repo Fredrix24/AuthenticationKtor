@@ -14,10 +14,11 @@ object AuthService {
 
     fun register(username: String, password: String): RegisterResult {
         if (username.isBlank() || password.length < 6) return RegisterResult.InvalidInput
-        if (UserRepository.existsByUsername(username)) return RegisterResult.UsernameTaken
 
         val hash = PasswordHasher.hash(password)
-        val user = UserRepository.save(username, hash)
+        val user = UserRepository.register(username, hash)
+            ?: return RegisterResult.UsernameTaken
+
         return RegisterResult.Success(user)
     }
 

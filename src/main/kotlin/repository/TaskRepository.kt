@@ -1,10 +1,11 @@
 package com.example.repository
 
 import com.example.model.Task
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
 object TaskRepository {
-    private val tasks = mutableMapOf<Int, Task>()
+    private val tasks = ConcurrentHashMap<Int, Task>()
     private val idCounter = AtomicInteger(1)
 
     init {
@@ -32,4 +33,11 @@ object TaskRepository {
     }
 
     fun deleteTask(id: Int): Boolean = tasks.remove(id) != null
+
+    fun clear() {
+        tasks.clear()
+        idCounter.set(1)
+        addTask("Изучить Ktor", "Разобраться с маршрутизацией")
+        addTask("Написать CRUD", "Реализовать 5 маршрутов")
+    }
 }

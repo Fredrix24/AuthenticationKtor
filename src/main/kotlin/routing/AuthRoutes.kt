@@ -10,13 +10,17 @@ import io.ktor.server.routing.*
 
 fun Route.authRoutes() {
     route("/auth") {
+
         post("/register") {
             val req = call.receive<RegisterRequest>()
             when (val result = AuthService.register(req.username, req.password)) {
                 is AuthService.RegisterResult.Success -> call.respond(
                     HttpStatusCode.Created,
-                    ApiResponse(true, "Пользователь зарегистрирован",
-                        mapOf("id" to result.user.id, "username" to result.user.username))
+                    ApiResponse(
+                        success = true,
+                        message = "Пользователь зарегистрирован",
+                        data = RegisterResponse(result.user.id, result.user.username)
+                    )
                 )
                 AuthService.RegisterResult.UsernameTaken -> call.respond(
                     HttpStatusCode.Conflict,
